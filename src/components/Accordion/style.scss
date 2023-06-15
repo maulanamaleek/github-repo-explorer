@@ -1,0 +1,13 @@
+.accordion {
+  background-color: grey;
+  padding: .6rem .9rem;
+  border-radius: .4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.accordion__expand {
+  height: 2.2rem;
+  width: 2.2rem;
+}
