@@ -4,7 +4,7 @@ export interface IRepo {
   name: string;
   full_name: string;
   private: boolean;
-  description: string;
+  description: string | null;
   stargazers_count: number;
 }
 
@@ -23,4 +23,10 @@ export interface IUserSearchResponse {
 export interface IRateLimitResp {
   message: string;
   documentation_url: string;
+}
+
+export enum EError {
+  FETCH_ERROR = 'FETCH_ERROR',
+  RATE_LIMIT = 'RATE_LIMIT',
+  DEFAULT = 'DEFAULT'
 }

@@ -1,5 +1,12 @@
 
-export const truncateChar = (str: string, amount: number) => {
+export const truncateChar = (
+  str: string | null,
+  amount: number
+): string | null => {
+  if (!str) {
+    return null;
+  }
+
   if (str.length < amount) {
     return str;
   }

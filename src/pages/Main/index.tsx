@@ -1,12 +1,14 @@
-
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+
 import TextInput from '../../components/TextInput';
-import './style.scss';
 import Button from '../../components/Button';
 import Accordion from '../../components/Accordion';
-import { useQuery } from '@tanstack/react-query';
 import { IUserSearchResponse } from '../../types';
 import { handleApiRateLimit } from '../../utils/api';
+import Loading from '../../components/Loading';
+
+import './style.scss';
 
 const useDebounce = (val: string, timeout: number) => {
   const [value, setValue] = useState('')
@@ -24,7 +26,7 @@ const useDebounce = (val: string, timeout: number) => {
 const Main = () => {
   const [username, setUsername] = useState('');
   const value = useDebounce(username, 500);
-  const { data, isLoading, isError } = useQuery<IUserSearchResponse>({
+  const { data, isLoading, isError, error } = useQuery<IUserSearchResponse>({
     queryKey: ['github', value],
     queryFn: async ({ }) => {
       if (!value) {
@@ -51,8 +53,6 @@ const Main = () => {
     return <h1>Error</h1>
   }
 
-  console.log({ data })
-
   return (
     <div className="main main--flex">
       <TextInput
@@ -67,7 +67,7 @@ const Main = () => {
 
       {username ? <p>Showing Results for: "{username}"</p> : null}
 
-      {isLoading && <h1>Loading...</h1>}
+      {isLoading && <Loading />}
 
       {data?.items?.map((i) => (
         <Accordion

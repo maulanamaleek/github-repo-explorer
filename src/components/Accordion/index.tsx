@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import IconExpand from '../../assets/expand.svg';
 import IconStar from '../../assets/star.svg';
-import { IRepo } from '../../types';
+import { EError, IRepo } from '../../types';
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '../../constants';
 import './style.scss';
 import { truncateChar } from '../../utils';
 import { handleApiRateLimit } from '../../utils/api';
+import ErrorBox from '../ErrorBox';
 
 interface IAccordionProps {
   title: string;
@@ -17,9 +18,10 @@ const Accordion = ({
   title,
   repoUrl,
 }: IAccordionProps) => {
+  const [showChildren, setShowChildren] = useState(false);
   const {
     data: repoData,
-    isError,
+    isSuccess,
     error,
     isLoading
   } = useQuery<IRepo[]>({
@@ -29,42 +31,23 @@ const Accordion = ({
       const data = await res.json();
 
       if (!data) {
-        throw new Error('Request Failed');
+        throw new Error(EError.FETCH_ERROR)
       }
 
       handleApiRateLimit(data, () => {
-        throw new Error('Rate Limited')
+        throw new Error(EError.RATE_LIMIT)
       })
       return data;
     }
   })
-  const [showChildren, setShowChildren] = useState(false);
 
-  if (isLoading) {
-    return <h1>Loading...</h1>
+  const handleArrowClick = () => {
+    return setShowChildren((prev) => !prev)
   }
 
-  if (isError) {
-    return <h1>{`${error}`}</h1>
-  }
-
-
-  return (
-    <>
-      <div className="accordion">
-        <span className="accordion__title">
-          {title}
-        </span>
-
-        <img
-          onClick={() => setShowChildren((prev) => !prev)}
-          className="accordion__expand"
-          src={IconExpand}
-          alt="expand"
-        />
-      </div>
-
-      {showChildren && (
+  const childrenElem = (() => {
+    if (isSuccess && !isLoading) {
+      return (
         <div className="children">
           {repoData.map((repo) => (
             <div className="children__item" key={repo.id}>
@@ -85,7 +68,29 @@ const Accordion = ({
             </div>
           ))}
         </div>
-      )}
+      )
+    }
+
+    return <ErrorBox error={error} />
+  })()
+
+
+  return (
+    <>
+      <div className="accordion">
+        <span className="accordion__title">
+          {title}
+        </span>
+
+        <img
+          onClick={handleArrowClick}
+          className={`accordion__icon ${showChildren ? 'rotated' : ''}`}
+          src={IconExpand}
+          alt="expand"
+        />
+      </div>
+
+      {showChildren && childrenElem}
     </>
   )
 }

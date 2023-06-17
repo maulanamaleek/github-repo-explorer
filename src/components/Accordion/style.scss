@@ -6,9 +6,13 @@
   justify-content: space-between;
   align-items: center;
 
-  .accordion__expand {
+  .accordion__icon {
     height: 2.2rem;
     width: 2.2rem;
+
+    &.rotated {
+      rotate: 180deg;
+    }
   }
 }
 

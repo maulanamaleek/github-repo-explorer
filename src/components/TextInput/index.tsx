@@ -1,7 +1,6 @@
 import React from "react";
 import './style.scss';
 
-
 interface ITextInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   value: string;
   handleChange: (val: string) => void;
