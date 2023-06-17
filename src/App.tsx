@@ -1,12 +1,26 @@
-import { useState } from 'react'
+
 import Main from './pages/Main'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      retryDelay: 500
+    }
+  }
+});
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
-      <Main />
+      <QueryClientProvider client={queryClient}>
+        <Main />
+
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </>
   )
 }
