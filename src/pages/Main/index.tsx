@@ -4,11 +4,13 @@ import { useQuery } from '@tanstack/react-query';
 import TextInput from '../../components/TextInput';
 import Button from '../../components/Button';
 import Accordion from '../../components/Accordion';
-import { IUserSearchResponse } from '../../types';
+import { EError, IUserSearchResponse } from '../../types';
 import { handleApiRateLimit } from '../../utils/api';
 import Loading from '../../components/Loading';
 
 import './style.scss';
+import ErrorBox from '../../components/ErrorBox';
+import { QUERY_KEY } from '../../constants';
 
 const useDebounce = (val: string, timeout: number) => {
   const [value, setValue] = useState('')
@@ -26,8 +28,8 @@ const useDebounce = (val: string, timeout: number) => {
 const Main = () => {
   const [username, setUsername] = useState('');
   const value = useDebounce(username, 500);
-  const { data, isLoading, isError, error } = useQuery<IUserSearchResponse>({
-    queryKey: ['github', value],
+  const { data, isLoading, isError, error, refetch } = useQuery<IUserSearchResponse>({
+    queryKey: [QUERY_KEY.GITHUB_USER, value],
     queryFn: async ({ }) => {
       if (!value) {
         return {};
@@ -40,18 +42,18 @@ const Main = () => {
 
       const data = await res.json();
 
+      if (!data) {
+        throw new Error(EError.FETCH_ERROR);
+      }
+
       handleApiRateLimit(data, () => {
-        throw new Error('Rate Limited')
+        throw new Error(EError.RATE_LIMIT)
       })
 
       return data
     }
   })
 
-
-  if (isError) {
-    return <h1>Error</h1>
-  }
 
   return (
     <div className="main main--flex">
@@ -61,7 +63,7 @@ const Main = () => {
         handleChange={setUsername}
       />
 
-      <Button handleClick={() => { }}>
+      <Button handleClick={refetch}>
         Search
       </Button>
 
@@ -69,14 +71,17 @@ const Main = () => {
 
       {isLoading && <Loading />}
 
-      {data?.items?.map((i) => (
-        <Accordion
-          key={i.id}
-          title={i.login}
-          repoUrl={i.repos_url}
-        />
-
-      ))}
+      {isError ? (
+        <ErrorBox error={error} />
+      ) : (
+        data?.items?.map((i) => (
+          <Accordion
+            key={i.id}
+            title={i.login}
+            repoUrl={i.repos_url}
+          />
+        ))
+      )}
 
     </div>
   )

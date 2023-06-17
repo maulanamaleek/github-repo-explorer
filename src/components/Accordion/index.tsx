@@ -45,28 +45,49 @@ const Accordion = ({
     return setShowChildren((prev) => !prev)
   }
 
+  const handleRepoNavigation = (name: string, url: string) => {
+    if (confirm(`Navigate to ${name} github repository?`)) {
+      window.open(url, '_blank');
+    }
+  }
+
   const childrenElem = (() => {
     if (isSuccess && !isLoading) {
-      return (
-        <div className="children">
-          {repoData.map((repo) => (
-            <div className="children__item" key={repo.id}>
-              <div className="children__item__header">
-                <h5>{repo.name}</h5>
-                <div className="children__item__star-container">
-                  <img
-                    src={IconStar}
-                    className="children__item__star-img"
-                    alt="star"
-                  />
-                  <span>{repo.stargazers_count}</span>
-                </div>
-              </div>
+      const repoListElem = repoData.map((repo) => (
+        <div
+          onClick={() => handleRepoNavigation(repo.full_name, repo.html_url)}
+          className="children__item"
+          key={repo.id}
+        >
+          <div className="children__item__header">
+            <h5>{repo.name}</h5>
 
-              {/* Limit to 300 char max */}
-              <p>{truncateChar(repo.description, 300)}</p>
+            <div className="children__item__star-container">
+              <img
+                src={IconStar}
+                className="children__item__star-img"
+                alt="star"
+              />
+
+              <span>{repo.stargazers_count}</span>
             </div>
-          ))}
+          </div>
+
+          {/* Limit to 300 char max */}
+          <p>{truncateChar(repo.description, 300)}</p>
+        </div>
+      ))
+
+      return (
+        <div
+          className="children"
+        >
+          {repoData.length ?
+            repoListElem
+            : (
+              <ErrorBox customMessage={`No repository found for user: ${title}`} />
+            )
+          }
         </div>
       )
     }

@@ -5,14 +5,24 @@ import { EError } from '../../types';
 import './style.scss';
 
 interface IErrorBoxProps {
-  error: unknown;
+  error?: unknown;
+  customMessage?: string;
 }
 
 const ErrorBox = ({
-  error
+  error,
+  customMessage
 }: IErrorBoxProps) => {
+  if (customMessage) {
+    return (
+      <div className="error-box">
+        <p>{customMessage}</p>
+      </div>
+    )
+  }
+
   // return null if error is unknown
-  if (!(error instanceof Error)) {
+  if (!error || !(error instanceof Error)) {
     return null;
   }
 
@@ -25,7 +35,6 @@ const ErrorBox = ({
       </div>
     )
   }
-
 
   return (
     <div className="error-box">

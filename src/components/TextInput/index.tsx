@@ -12,7 +12,7 @@ const TextInput = ({
 }: ITextInputProps) => {
   return (
     <input
-      className="input input--full"
+      className="input"
       {...props}
       value={value}
       onChange={(e) => handleChange(e.target.value)}
