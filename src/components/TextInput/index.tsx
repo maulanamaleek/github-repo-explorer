@@ -12,6 +12,7 @@ const TextInput = ({
 }: ITextInputProps) => {
   return (
     <input
+      data-testid="text-input"
       className="input"
       {...props}
       value={value}

@@ -1,13 +1,14 @@
 import { useState } from 'react';
+
 import IconExpand from '../../assets/expand.svg';
 import IconStar from '../../assets/star.svg';
 import { IRepo } from '../../types';
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '../../constants';
-import './style.scss';
 import { truncateChar } from '../../utils';
 import { getRepo } from '../../utils/api';
 import ErrorBox from '../ErrorBox';
+import './style.scss';
 
 interface IAccordionProps {
   title: string;
@@ -68,6 +69,7 @@ const Accordion = ({
 
       return (
         <div
+          data-testid="accordion-children"
           className="children"
         >
           {repoData.length ?
@@ -86,12 +88,13 @@ const Accordion = ({
 
   return (
     <>
-      <div className="accordion">
+      <div data-testid="accordion" className="accordion">
         <span className="accordion__title">
           {title}
         </span>
 
         <img
+          data-testid="accordion-icon"
           onClick={handleArrowClick}
           className={`accordion__icon ${showChildren ? 'rotated' : ''}`}
           src={IconExpand}

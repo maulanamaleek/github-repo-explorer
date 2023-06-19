@@ -1,7 +1,7 @@
 import './style.scss';
 
 const Loading = () => {
-  return <div className="loader" />
+  return <div data-testid="loader" className="loader" />
 }
 
 export default Loading

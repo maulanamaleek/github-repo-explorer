@@ -14,6 +14,7 @@ const Button = ({
   return (
     <button
       className="btn btn--full"
+      data-testid="button"
       {...props}
       onClick={handleClick}
     >
