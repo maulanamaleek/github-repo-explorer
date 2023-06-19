@@ -1,11 +1,11 @@
-
-import renderer from 'react-test-renderer'
 import Loading from '../../components/Loading'
+import { render, screen } from '../testingUtils';
 
-test('Display loading spinner', () => {
-  const component = renderer.create(
-    <Loading />
-  )
+describe('Component - Loading', () => {
+  it('Should render Loading', () => {
+    render(<Loading />)
 
-  expect(component).toBeDefined();
+    const elem = screen.getByTestId('loader')
+    expect(elem).toBeVisible();
+  })
 })

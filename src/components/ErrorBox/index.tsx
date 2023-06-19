@@ -15,7 +15,7 @@ const ErrorBox = ({
 }: IErrorBoxProps) => {
   if (customMessage) {
     return (
-      <div className="error-box">
+      <div data-testid="error-box" className="error-box">
         <p>{customMessage}</p>
       </div>
     )
@@ -30,14 +30,14 @@ const ErrorBox = ({
 
   if (!errKey.includes(error.message)) {
     return (
-      <div className="error-box">
+      <div data-testid="error-box" className="error-box">
         <p>{ERROR_MESSAGES.DEFAULT}</p>
       </div>
     )
   }
 
   return (
-    <div className="error-box">
+    <div data-testid="error-box" className="error-box">
       <p>{ERROR_MESSAGES[error.message as E_Error]}</p>
     </div>
   )
