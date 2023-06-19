@@ -1,0 +1,9 @@
+.btn {
+  padding: .6rem .8rem;
+  background-color: blue;
+  font-size: large;
+
+  &.btn--full {
+    width: 100%;
+  }
+}
