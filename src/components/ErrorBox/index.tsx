@@ -1,6 +1,6 @@
 
 import { ERROR_MESSAGES } from '../../constants';
-import { EError } from '../../types';
+import { E_Error } from '../../types';
 
 import './style.scss';
 
@@ -26,7 +26,7 @@ const ErrorBox = ({
     return null;
   }
 
-  const errKey = Object.keys(EError);
+  const errKey = Object.keys(E_Error);
 
   if (!errKey.includes(error.message)) {
     return (
@@ -38,7 +38,7 @@ const ErrorBox = ({
 
   return (
     <div className="error-box">
-      <p>{ERROR_MESSAGES[error.message as EError]}</p>
+      <p>{ERROR_MESSAGES[error.message as E_Error]}</p>
     </div>
   )
 }

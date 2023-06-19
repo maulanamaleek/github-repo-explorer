@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import IconExpand from '../../assets/expand.svg';
 import IconStar from '../../assets/star.svg';
-import { EError, IRepo } from '../../types';
+import { IRepo } from '../../types';
 import { useQuery } from '@tanstack/react-query';
 import { QUERY_KEY } from '../../constants';
 import './style.scss';
 import { truncateChar } from '../../utils';
-import { handleApiRateLimit } from '../../utils/api';
+import { getRepo } from '../../utils/api';
 import ErrorBox from '../ErrorBox';
 
 interface IAccordionProps {
@@ -26,19 +26,7 @@ const Accordion = ({
     isLoading
   } = useQuery<IRepo[]>({
     queryKey: [QUERY_KEY.GITHUB_REPO, repoUrl],
-    queryFn: async () => {
-      const res = await fetch(repoUrl);
-      const data = await res.json();
-
-      if (!data) {
-        throw new Error(EError.FETCH_ERROR)
-      }
-
-      handleApiRateLimit(data, () => {
-        throw new Error(EError.RATE_LIMIT)
-      })
-      return data;
-    }
+    queryFn: () => getRepo(repoUrl)
   })
 
   const handleArrowClick = () => {

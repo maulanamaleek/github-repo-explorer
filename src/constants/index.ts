@@ -1,11 +1,11 @@
-import { EError } from "../types"
+import { E_Error } from "../types"
 
 export const QUERY_KEY = {
   GITHUB_USER: 'github_user',
   GITHUB_REPO: 'github_repo'
 }
 
-export const ERROR_MESSAGES: Record<EError, string> = {
+export const ERROR_MESSAGES: Record<E_Error, string> = {
   RATE_LIMIT: 'Your request is being rate-limited from github api, please try again in a few minutes',
   FETCH_ERROR: 'There is something wrong when fetching your request',
   DEFAULT: 'There is someting wrong'

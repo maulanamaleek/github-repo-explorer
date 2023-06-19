@@ -3,7 +3,7 @@ import './style.scss';
 
 interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
-  handleClick: () => void;
+  handleClick?: () => void;
 }
 
 const Button = ({

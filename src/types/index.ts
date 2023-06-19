@@ -26,7 +26,7 @@ export interface IRateLimitResp {
   documentation_url: string;
 }
 
-export enum EError {
+export enum E_Error {
   FETCH_ERROR = 'FETCH_ERROR',
   RATE_LIMIT = 'RATE_LIMIT',
   DEFAULT = 'DEFAULT'
