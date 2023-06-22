@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import TextInput from '../../components/TextInput'
 import Button from '../../components/Button'
@@ -13,21 +13,25 @@ const SearchForm = ({
 }: ISearchFormProps) => {
   const [username, setUsername] = useState('');
 
-  useEffect(() => {
-    console.log({ username })
-  }, [username])
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+
+    onClick(username)
+  }
+
+
   return (
-    <div className="search-form">
+    <form className="search-form" onSubmit={onSubmit}>
       <TextInput
         value={username}
         placeholder='Enter Username'
         handleChange={setUsername}
       />
 
-      <Button handleClick={() => onClick(username)}>
+      <Button type="submit">
         Search
       </Button>
-    </div>
+    </form>
   )
 }
 
